@@ -1,0 +1,71 @@
+[project]
+name = "aegis"
+version = "0.1.0"
+description = "AI-powered personal assistant with multi-agent architecture"
+requires-python = ">=3.10,<3.14"
+readme = "README.md"
+license = { text = "MIT" }
+
+dependencies = [
+    "crewai>=0.28.0",
+    "openai>=1.30.0",
+    "chromadb>=0.4.0",
+    "pydantic>=2.5.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0.0",
+    "httpx>=0.27.0",
+    "fastapi>=0.110.0",
+    "uvicorn>=0.29.0",
+    "python-multipart>=0.0.9",
+    "rich>=13.0.0",
+    "tiktoken>=0.5.0",
+    "Pillow>=10.0.0",
+    "PyPDF2>=3.0.0",
+    "pdfplumber>=0.10.0",
+    "python-docx>=1.1.0",
+    "python-pptx>=0.6.21",
+    "tavily-python>=0.7",
+    "croniter>=6.0",
+    "icalendar>=5.0",
+    "markdown>=3.5",
+    "beautifulsoup4>=4.12.0",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "F",      # pyflakes
+    "W",      # pycodestyle warnings
+    "I",      # isort (import ordering)
+    "B",      # flake8-bugbear (common bugs)
+    "UP",     # pyupgrade (modern Python)
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "B008",   # do not perform function calls in argument defaults
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = ["-v", "--tb=short", "-p", "no:cacheprovider"]
+timeout = 300

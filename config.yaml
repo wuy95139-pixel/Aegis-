@@ -1,0 +1,108 @@
+# ============================================================
+# Aegis 主配置文件
+# 所有可配置项均在此文件中定义，支持通过环境变量覆盖
+# ============================================================
+
+# --- LLM 配置 ---
+llm:
+  provider: openai              # 提供商: openai / anthropic / azure / local
+  model: deepseek-v4-pro         # 默认模型
+  temperature: 0.7
+  max_tokens: 4096
+  # fallback_models:            # 模型降级链
+  #   - gpt-3.5-turbo
+
+# --- 嵌入模型配置 ---
+embedding:
+  provider: openai
+  model: text-embedding-3-small
+  dimension: 1536              # 向量维度 (与模型匹配)
+
+# --- 记忆系统（增强版：结合 Claude Code 文件记忆 + Aegis 向量记忆） ---
+memory:
+  # 短期记忆 — 会话级对话缓冲区
+  short_term:
+    max_tokens: 16000          # 短期记忆最大 token 数
+    window_size: 20            # 保留最近 N 轮对话
+
+  # 长期记忆 — ChromaDB 向量存储（语义检索）
+  long_term:
+    backend: chromadb          # chromadb / faiss
+    persist_dir: ./data/chroma_db
+    collection_name: aegis_long_term_memory
+    similarity_top_k: 5        # 检索返回条数
+
+  # 文件记忆 — Markdown 文件存储（SOURCE OF TRUTH，人类可读）
+  file_store:
+    enabled: true
+    base_dir: ./data/memory    # 记忆文件根目录
+    index_file: MEMORY.md      # 中央索引文件名
+    max_index_lines: 200       # 索引最大行数
+    auto_extract: true         # 自动 LLM 提取关键点
+    importance_decay: false    # 重要性时间衰减（暂未启用）
+
+  # 经验库 — 成功/失败案例学习
+  experience:
+    enabled: true
+    auto_extract_lesson: true  # 自动 LLM 提炼教训
+    min_confidence: 0.4        # 最低确信度阈值
+    max_cases_per_query: 5     # 每次查询返回最大案例数
+
+  # 偏好学习 — 显式+隐式偏好检测
+  preference:
+    enabled: true
+    min_confidence_strong: 0.7  # 强偏好阈值
+    min_confidence_active: 0.4  # 活跃偏好阈值
+    detect_implicit: true       # 是否检测隐式偏好
+    detect_habits: true         # 是否检测行为习惯
+    max_prefs_per_category: 10  # 每类别最大偏好数
+
+# --- 智能体配置 ---
+agents:
+  file_processor:
+    enabled: true
+    supported_formats: [pdf, docx, pptx, png, jpg, txt, md]
+    ocr_enabled: false         # OCR 默认关闭，需时手动开启
+    max_file_size_mb: 50
+
+  task_dispatcher:
+    enabled: true
+    auto_assign: true           # 是否自动指派给预设人员
+    default_assignee: "未分配"
+
+  memory_agent:
+    enabled: true
+    context_window: 10          # 检索历史对话轮数
+
+  reminder_agent:
+    enabled: true
+    check_interval_minutes: 5   # 检查提醒间隔
+    email_check_enabled: false  # 邮件监测 (需配置 SMTP)
+
+  research_agent:
+    enabled: true
+    search_sources: [web, news, scholar]  # 搜索源
+    max_search_results: 10
+    report_format: markdown     # 报告格式: markdown / html / pdf
+
+# --- MCP 外部服务 ---
+mcp_servers:
+  search:
+    enabled: false
+    endpoint: ""
+    type: mcp                    # mcp / rest
+  translation:
+    enabled: false
+    endpoint: ""
+    type: mcp
+  calendar:
+    enabled: false
+    endpoint: ""
+    type: mcp
+
+# --- 系统 ---
+system:
+  log_level: INFO
+  log_dir: ./logs
+  data_dir: ./data
+  max_concurrent_tasks: 5       # 最大并发任务数

@@ -1,0 +1,84 @@
+# ============================================================
+# Aegis .gitignore
+# ============================================================
+
+# Environment — contains real API keys, never commit
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Runtime data (generated at runtime)
+data/
+logs/
+output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Test artifacts
+temp_e2e_test.txt
+
+# Config files that may contain secrets
+config.local.yaml
+config*.local.yaml
+
+# SSL/TLS keys
+*.pem
+*.key
+*.crt
+*.cer
+*.pfx
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Secret files
+secrets.yaml
+secrets.*.yaml
+credentials*
+*_credentials*
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Jupyter
+*.ipynb_checkpoints/
+
+# Docker
+docker-compose.override.yml
+
+# Claude Code internal state
+.claude/
+
+# Node (future frontend)
+node_modules/
