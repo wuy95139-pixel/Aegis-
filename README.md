@@ -157,6 +157,4 @@ User → Orchestrator → MemoryAgent (检索历史研究)
 - **新 MCP 服务**: 在 `config.yaml` 的 `mcp_servers` 配置新端点
 - **新通知方式**: 在 `calendar_tools.py` 注册新的 notify_handler
 
-## License
 
-MIT
